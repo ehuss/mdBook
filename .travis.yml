@@ -1,15 +1,19 @@
 language: rust
 
-rust:
-  - stable
-  - beta
-  - nightly
+matrix:
+  include:
+    - rust: stable
+      env: TARGET=x86_64-unknown-linux-gnu
+    - rust: beta
+      env: TARGET=x86_64-unknown-linux-gnu
+    - rust: nightly
+      env: TARGET=x86_64-unknown-linux-gnu
 
-os:
-  - linux
-  - osx
+    - rust: stable
+      os: osx
+      env: TARGET=x86_64-apple-darwin
 
-cache: 
+cache:
   timeout: 360
   cargo: true
 
@@ -30,19 +34,20 @@ before_deploy:
 deploy:
   provider: releases
   api_key:
-    - secure: cURRWBr034iqBz/ifD7uOunBfNR30YxIXfgLX0osWz+iafkVbhDGYYz9sBmRraqO2P7L2koEXMADVb/md1kI2+ykiq/ml+l9zuEAZPVmvSGUN7ZD+7s+lu3l5OBPG5z175T+b2q2q2m8XVR7TW20ra4QbE0bq06KAoOyjSgQVBTSCYsL9uTsGwiVRMEqqJT/BmKhKJNkpGsTKyBSKkOXvfeAAbE260vXUDEN9TYdJ3fvteRrpwLX56ee64gIZUq0RjDc4SKIEqilM6iUtNMvurqaewYNGkiXKRruV6BPCHxEHo6NNT46kOJLBJTf7gZw//dWhSoWpg9P0gdAnPWm407kSa3F7aJ1eRShAFQ4BLyfz9efTqm+jP3fOp7Mm7igSh9w6caSRuOnSsUf5+raRQ8E5Y9HsWGzzpZQk24Fx9EGZ04EeDSdpZAFz+jcbMpHf8t2p4CEx0CCNwYvKx6EydMKbMF5QteQ8SQkXNLhv7Rz2OgtXWYZPRVCMfQfOplsi2InsLCrQxTgwh+6u654SqVSgaHG+IncEAxBrdWy4rHcg7qereUcKfcY3k96vaDxdn/T2c00Ig0aNFR91YnixGMd6J6tQgDcRK9jh6fUm1CCBE9hT+pNUmtgYKuWBoLZexUZFFnfuBed0WciBot1bGDDamndqKq0jJiAzg+GMHk=
+    secure: hgJFxKEYRmNpvjcLANPU2MqQ+bCAS2kSJs3ayf5xAjVgUoTGUFr8Zu+xErp02k0qq06rtA1VaI6HOirdQwgQqlrvZwXy3Nib8kdldsGtxLUcxpHn2u4C+DPKz++1J3/25IPk+IwGpTHEGtdihy+6VoVhj6/mASNTETX5W1xIF8ppCHoFPFrlzdTDyAZxIsX1pGeSOVsLCs1s87lOHMltVKyiqZkSmff3dtef5gyA9b9Osmez75Ek4PPEEIzCaTA3vvFrEaPaYH2ctXo1UH3D4myVJ6TlNSmQjW3GTLhPXxBP5AI+5SdvN20YS0Wa0SLMiIbde+Gl4JkkcA3eS7zbs9Nrb1+wCj5UirVOvU2LTa/NmASWGahzbgo/wBUkJ4sj1PIwMP2zLRM9GZMwPNrKSRy4sPAffQLdszh1JrfWediiTBzH2T5MDO8CgbrMZP2+bcwxIqy5BLtnwxYe5tYf6G4LRyu8kc2rHQoAWzqrJWQfO+Myr3F/v1FL6q75YhFTaHoTO+1jU/g4QkI3RTYI/qBULrONYmNZdjjwUtV4mPGZPUY7KwDWa7fqz2c1a9drpRSudztIKtUTTBaISbWWbt/i6VbejUVT3UPXLZzduXQ/NQx5U5RQeXunZ9LepGShJtQs7eoWlHQyLDfqmXAJQhUnPFflHxwt9k8+Mc9Q83E=
   file_glob: true
   file: "$CRATE_NAME-$TRAVIS_TAG-$TARGET.*"
   on:
     condition: "$TRAVIS_RUST_VERSION = stable"
     tags: true
   skip_cleanup: true
+  all_branches: true
 
-branches:
-  only:
-    - master
-    - /^v\d+\.\d+\.\d+.*$/
+# branches:
+#   only:
+#     - master
+#     - /^v\d+\.\d+\.\d+.*$/
 
-notifications:
-  email:
-    on_success: never
+# notifications:
+#   email:
+#     on_success: never
