@@ -22,7 +22,7 @@ serde = "1.0"
 serde_derive = "1.0"
 error-chain = "0.12"
 serde_json = "1.0"
-pulldown-cmark = "0.1.2"
+pulldown-cmark = "0.4.1"
 lazy_static = "1.0"
 log = "0.4"
 env_logger = "0.5"
@@ -51,7 +51,8 @@ ammonia = { version = "1.1", optional = true }
 select = "0.4"
 pretty_assertions = "0.5"
 walkdir = "2.0"
-pulldown-cmark-to-cmark = "1.1.0"
+# This is temporary until https://github.com/Byron/pulldown-cmark-to-cmark/pull/2 is merged.
+pulldown-cmark-to-cmark = { git="https://github.com/euclio/pulldown-cmark-to-cmark.git", branch="cmark-upgrade" }
 
 [features]
 default = ["output", "watch", "serve", "search"]

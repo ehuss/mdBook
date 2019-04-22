@@ -6,7 +6,7 @@ use errors::Error;
 use regex::Regex;
 
 use pulldown_cmark::{
-    html, Event, Options, Parser, Tag, OPTION_ENABLE_FOOTNOTES, OPTION_ENABLE_TABLES,
+    html, CowStr, Event, Options, Parser, Tag,
 };
 
 use std::borrow::Cow;
@@ -73,12 +73,12 @@ fn adjust_links<'a>(event: Event<'a>, with_base: &str) -> Event<'a> {
     }
 
     match event {
-        Event::Start(Tag::Link(dest, title)) => {
+        Event::Start(Tag::Link(link_type, dest, title)) => {
             if !HTTP_LINK.is_match(&dest) {
                 let dest = if !with_base.is_empty() {
                     format!("{}/{}", with_base, dest)
                 } else {
-                    dest.clone().into_owned()
+                    dest.clone().into_string()
                 };
 
                 if let Some(caps) = MD_LINK.captures(&dest) {
@@ -88,11 +88,11 @@ fn adjust_links<'a>(event: Event<'a>, with_base: &str) -> Event<'a> {
                         html_link.push_str(anchor.as_str());
                     }
 
-                    return Event::Start(Tag::Link(Cow::from(html_link), title));
+                    return Event::Start(Tag::Link(link_type, CowStr::from(html_link), title));
                 }
             }
 
-            Event::Start(Tag::Link(dest, title))
+            Event::Start(Tag::Link(link_type, dest, title))
         }
         _ => event,
     }
@@ -107,8 +107,8 @@ pub fn render_markdown_with_base(text: &str, curly_quotes: bool, base: &str) -> 
     let mut s = String::with_capacity(text.len() * 3 / 2);
 
     let mut opts = Options::empty();
-    opts.insert(OPTION_ENABLE_TABLES);
-    opts.insert(OPTION_ENABLE_FOOTNOTES);
+    opts.insert(Options::ENABLE_TABLES);
+    opts.insert(Options::ENABLE_FOOTNOTES);
 
     let p = Parser::new_ext(text, opts);
     let mut converter = EventQuoteConverter::new(curly_quotes);
@@ -149,7 +149,7 @@ impl EventQuoteConverter {
                 event
             }
             Event::Text(ref text) if self.convert_text => {
-                Event::Text(Cow::from(convert_quotes_to_curly(text)))
+                Event::Text(CowStr::from(convert_quotes_to_curly(text)))
             }
             _ => event,
         }
@@ -161,7 +161,7 @@ fn clean_codeblock_headers(event: Event) -> Event {
         Event::Start(Tag::CodeBlock(ref info)) => {
             let info: String = info.chars().filter(|ch| !ch.is_whitespace()).collect();
 
-            Event::Start(Tag::CodeBlock(Cow::from(info)))
+            Event::Start(Tag::CodeBlock(CowStr::from(info)))
         }
         _ => event,
     }
