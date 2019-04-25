@@ -4,7 +4,7 @@ use std::path::Path;
 use utils;
 
 use handlebars::{Context, Handlebars, Helper, HelperDef, Output, RenderContext, RenderError};
-use pulldown_cmark::{html, Event, Parser, Tag};
+use pulldown_cmark::{html, Event, Parser};
 use serde_json;
 
 // Handlebars helper to construct TOC
@@ -118,8 +118,7 @@ impl HelperDef for RenderToc {
 
                 // filter all events that are not inline code blocks
                 let parser = Parser::new(name).filter(|event| match *event {
-                    Event::Start(Tag::Code)
-                    | Event::End(Tag::Code)
+                    Event::Code(_)
                     | Event::InlineHtml(_)
                     | Event::Text(_) => true,
                     _ => false,
