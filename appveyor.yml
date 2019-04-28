@@ -52,7 +52,7 @@ deploy:
   description: 'Windows release'
   artifact: /.*\.zip/
   auth_token:
-    secure: QQhjKVyz7mpjlyGhlXytbFQQfKFQWTahHkD+B0NzIUoEVqO7ZLWjnoWasvLqW4nE
+    secure: YTXaD2ti7IFnwoev0+R6DGY6v+7Q6psLNCNy8BEw7hsVJKwgEvrV6DX9+K+CSSne
   provider: GitHub
   on:
     RUST_CHANNEL: stable
