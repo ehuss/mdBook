@@ -22,6 +22,8 @@ before_cache:
 
 env:
   global:
+    # GITHUB_TOKEN — This is the encrypted OAuth token for deployment.
+    - secure: yrjJkSu9JrosCBb3CjISL4sMdGpyEXL/o9JqslaJVlyLsvtAB2/NyAlnivbVfwMNctaVZM8n82J7Vjpi/2UOGsXGCoLI4Au6YWdH2Y/z3tre+P5r2NyDE/GfZ39hSklTaVLyzNn4KbXrBCe/FAkjhLlzyvSYV8k57GS4+TDhokE/BcO+CbRr3Hm+rcphLsd/wJ+OcdiCRQ4iIRPfLpit36N2/YI4s+NxFPlDsVGXezYWMYKPRaK6Ef04NHM/2fcHNp19+nhGRbCus+mn474c62IVwpt7NsK48hRQbMtbYXT/w5uap0uAvJ/xr2kLRoUR/3P7SgWqip+hG5ZkdVP6dGVOml08Ow/8Y1VLLy13Wb7c18jcaDrQ1OWD6eGgIEvi8WTFEcLbsWeacZZVX2MDj4JLoA6T+RevAwdHMDu34pGar9WJBA3DL0XT3kGPbhQGEq8uGuVBoAD/U4Za594oB/633Te/fR/RRjMx9AcBBn7W+50XrBfVJhOkVIxfIcdf93gxmg8x45Tyfk7+JxyOEv4qvSUBRjgO6aTqN1VtTqnfEgUO2ulgNG/6IaD55Lxn2jahCAKt5Ab83sWNfdblS+tUqPNrupy4njPINPmG6hMtwYQc3H64pNcfGidSmfsljYH8BB8yoM0Q8Ja6GfijcQuLOMXN/AzTQ3z8SYmkNUo=
     - CRATE_NAME=mdbook
 
 script:
@@ -29,18 +31,25 @@ script:
   - cargo test --all --no-default-features
 
 before_deploy:
+  - cargo run -- build book-example
   - sh ci/before_deploy.sh
 
 deploy:
-  provider: releases
-  api_key:
-    - secure: y4SWsXH9P0g6ZixfGiOR3ReDnSEReIJToACdBD8PMljQtH4Hn8gmkkM0wkKYv1eU6GoN/lb9AM9BHRX5I9ySfD0M4eve6wewOjANk+DYNWfFV3F4r2SMN3HhjQ4Yi5ZACd/UD//K2iCXwyyd303c8NLPiMecvApVnvLYmnFm1zs7CcDnEFSZuY2SnJUsQPJSkshDwx3cygp1A5xMZU4nIoryqiQV00UReeet4Wy4YV+DuoUBFQlfuYdNsNInaHN9sNxf03WHAw4FfVbo9oyGO2Eih9hBw5LAazRRH38LDmaPw6EXIS/TDaeTVuo1TIHI5OJvEwDPWWXvac8shJTBfFocJwPirmAkteyYIX/YPwVeK72X9h+kjU47OhDz5cpTPSkLg8H96xxqsgha9Y5Bx8dGm0oX8NVNjm8+ENUrk1PN/M1vbcKUn3D55pNfSyJSHh66OPsNB5kR/vL6e8DG1R3g0QAAmI+6kEcFLOQh/LK0VzXAkh2tUHTCM5qlXKACFm8yqDU87Kr2xKGZ3I5pff0AURqgRe1wA/o11fqpTDFEa6nuZ1qrKHKYcVYHnG1r+1/qbMxy1E6gdFJ8ybZ4DsiW1xm98elhxpi+P7bsrhgR+ccSpUMSPbZUocaoxEUO3bUSrZNB0if5GuzxrRLlN3J0a1xJUETgHzpAwzW0Rrw=
-  file_glob: true
-  file: "$CRATE_NAME-$TRAVIS_TAG-$TARGET.*"
-  on:
-    condition: "$TRAVIS_RUST_VERSION = stable"
-    tags: true
-  skip_cleanup: true
+  - provider: releases
+    api_key: "$GITHUB_TOKEN"
+    file_glob: true
+    file: "$CRATE_NAME-$TRAVIS_TAG-$TARGET.*"
+    on:
+      condition: "$TRAVIS_RUST_VERSION = stable"
+      tags: true
+    skip_cleanup: true
+  - provider: pages
+    local_dir: book-example/book
+    skip_cleanup: true
+    github_token: "$GITHUB_TOKEN"
+    keep_history: true
+    on:
+      branch: master
 
 branches:
   only:
