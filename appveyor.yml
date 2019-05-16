@@ -3,13 +3,13 @@ environment:
     PROJECT_NAME: mdBook
   matrix:
     # Stable channel
-    - TARGET: i686-pc-windows-msvc
-      RUST_CHANNEL: stable
+    # - TARGET: i686-pc-windows-msvc
+    #   RUST_CHANNEL: stable
     - TARGET: x86_64-pc-windows-msvc
       RUST_CHANNEL: stable
     # Nightly channel
-    - TARGET: x86_64-pc-windows-msvc
-      RUST_CHANNEL: nightly
+    # - TARGET: x86_64-pc-windows-msvc
+    #   RUST_CHANNEL: nightly
 
 # Install Rust and Cargo
 install:
@@ -28,15 +28,16 @@ install:
 build: false
 
 # Equivalent to Travis' `script` phase
-test_script:
-  - cargo test --all
-  - cargo test --all --no-default-features
+# test_script:
+#   - cargo test --all
+#   - cargo test --all --no-default-features
 
 before_deploy:
   # Generate artifacts for release
-  - cargo rustc --bin mdbook --release -- -C lto
+  # - cargo rustc --bin mdbook --release -- -C lto
+  - cargo rustc --bin mdbook
   - mkdir staging
-  - copy target\release\mdbook.exe staging
+  - copy target\debug\mdbook.exe staging
   - cd staging
   - 7z a ../%PROJECT_NAME%-%APPVEYOR_REPO_TAG_NAME%-%TARGET%.zip *
   - appveyor PushArtifact ../%PROJECT_NAME%-%APPVEYOR_REPO_TAG_NAME%-%TARGET%.zip
@@ -44,8 +45,7 @@ before_deploy:
 deploy:
   description: 'Windows release'
   artifact: /.*\.zip/
-  auth_token:
-    secure: $(GITHUB_TOKEN)
+  auth_token: $(GITHUB_TOKEN)
   provider: GitHub
   on:
     RUST_CHANNEL: stable
