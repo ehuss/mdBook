@@ -1,15 +1,12 @@
 //! An example preprocessor for removing all forms of emphasis from a markdown
 //! book.
 
+extern crate comrak;
 extern crate mdbook;
-extern crate pulldown_cmark;
-extern crate pulldown_cmark_to_cmark;
 
 use mdbook::book::{Book, BookItem, Chapter};
-use mdbook::errors::{Error, Result};
+use mdbook::errors::Result;
 use mdbook::preprocess::{Preprocessor, PreprocessorContext};
-use pulldown_cmark::{Event, Parser, Tag};
-use pulldown_cmark_to_cmark::fmt::cmark;
 
 const NAME: &str = "md-links-to-html-links";
 
@@ -58,23 +55,35 @@ where
 }
 
 fn remove_emphasis(num_removed_items: &mut usize, chapter: &mut Chapter) -> Result<String> {
-    let mut buf = String::with_capacity(chapter.content.len());
+    // Parse the markdown to an AST, modify it, and then re-render it as markdown.
+    use comrak::nodes::{AstNode, NodeValue};
 
-    let events = Parser::new(&chapter.content).filter(|e| {
-        let should_keep = match *e {
-            Event::Start(Tag::Emphasis)
-            | Event::Start(Tag::Strong)
-            | Event::End(Tag::Emphasis)
-            | Event::End(Tag::Strong) => false,
-            _ => true,
-        };
-        if !should_keep {
-            *num_removed_items += 1;
+    let arena = comrak::Arena::new();
+    let root = comrak::parse_document(&arena, &chapter.content, &comrak::ComrakOptions::default());
+
+    fn iter_nodes<'a, F>(node: &'a AstNode<'a>, f: &mut F)
+    where
+        F: FnMut(&'a AstNode<'a>),
+    {
+        f(node);
+        for c in node.children() {
+            iter_nodes(c, f);
         }
-        should_keep
+    }
+
+    iter_nodes(root, &mut |node| {
+        if let NodeValue::Emph = node.data.borrow().value {
+            *num_removed_items += 1;
+            // Replace this node with its children, which is a Text node.
+            for child in node.children() {
+                node.insert_before(child);
+            }
+            node.detach();
+        }
     });
 
-    cmark(events, &mut buf, None)
-        .map(|_| buf)
-        .map_err(|err| Error::from(format!("Markdown serialization failed: {}", err)))
+    let mut new_markdown = vec![];
+    comrak::format_commonmark(root, &comrak::ComrakOptions::default(), &mut new_markdown)?;
+    let new_markdown = String::from_utf8(new_markdown)?;
+    Ok(new_markdown)
 }
