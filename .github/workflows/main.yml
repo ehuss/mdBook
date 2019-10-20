@@ -1,5 +1,10 @@
 name: CI
-on: [push, pull_request]
+on:
+  # Only run when merging to master, or open/synchronize/reopen a PR.
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   test:
