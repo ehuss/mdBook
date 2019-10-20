@@ -1,0 +1,40 @@
+name: Deploy
+on:
+  release:
+    types: [created]
+
+jobs:
+  release:
+    name: Deploy Release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+    - uses: actions/checkout@master
+    - name: Install hub
+      run: |
+        bash ci/install-hub.sh ${{ matrix.os }}
+        echo "##[add-path]hub/bin"
+    - name: Install Rustup
+      run: bash ci/install-rustup.sh ${{ matrix.rust }}
+    - name: Install Rust
+      run: bash ci/install-rust.sh ${{ matrix.rust }}
+    - name: Build and deploy artifacts
+      run: bash ci/make-release.sh ${{ matrix.os }}
+  pages:
+    name: GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Install Rust (rustup)
+      run: rustup update stable --no-self-update && rustup default stable
+    - name: Build gh-pages
+      run: cargo run -- build book-example
+    - name: Deploy to GitHub Pages
+      run: |
+        touch book-example/book/.nojekyll
+        curl -LsSf https://raw.githubusercontent.com/rust-lang/simpleinfra/master/setup-deploy-keys/src/deploy.rs | rustc - -o /tmp/deploy
+        (cd book-example/book && /tmp/deploy)
+      env:
+        GITHUB_DEPLOY_KEY: ${{ secrets.GITHUB_DEPLOY_KEY }}
