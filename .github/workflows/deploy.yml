@@ -17,11 +17,14 @@ jobs:
         bash ci/install-hub.sh ${{ matrix.os }}
         echo "##[add-path]hub/bin"
     - name: Install Rustup
-      run: bash ci/install-rustup.sh stable
+      run: ci/install-rustup.sh stable
+      shell: bash
     - name: Install Rust
-      run: bash ci/install-rust.sh stable
+      run: ci/install-rust.sh stable
+      shell: bash
     - name: Build and deploy artifacts
-      run: bash ci/make-release.sh ${{ matrix.os }}
+      run: ci/make-release.sh ${{ matrix.os }}
+      shell: bash
   pages:
     name: GitHub Pages
     runs-on: ubuntu-latest
