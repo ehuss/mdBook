@@ -31,5 +31,6 @@ if [[ -z "GITHUB_TOKEN" ]]
 then
   echo "$GITHUB_TOKEN not set, skipping deploy."
 else
+  echo length ${#GITHUB_TOKEN}
   hub release edit --attach $asset $TAG
 fi
