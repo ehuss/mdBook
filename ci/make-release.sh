@@ -32,5 +32,5 @@ then
   echo "$GITHUB_TOKEN not set, skipping deploy."
 else
   echo length ${#GITHUB_TOKEN}
-  hub release edit --attach $asset $TAG
+  hub release edit -m "" --attach $asset $TAG
 fi
