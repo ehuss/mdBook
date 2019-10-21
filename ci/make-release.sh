@@ -26,11 +26,11 @@ case $1 in
     echo "OS should be first parameter, was: $1"
     ;;
 esac
+cd ../..
 
 if [[ -z "$GITHUB_TOKEN" ]]
 then
   echo "$GITHUB_TOKEN not set, skipping deploy."
 else
-  echo length ${#GITHUB_TOKEN}
   hub release edit -m "" --attach $asset $TAG
 fi
