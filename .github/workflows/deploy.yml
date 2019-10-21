@@ -13,9 +13,8 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Install hub
-      run: |
-        bash ci/install-hub.sh ${{ matrix.os }}
-        echo "##[add-path]hub/bin"
+      run: ci/install-hub.sh ${{ matrix.os }}
+      shell: bash
     - name: Install Rustup
       run: ci/install-rustup.sh stable
       shell: bash
