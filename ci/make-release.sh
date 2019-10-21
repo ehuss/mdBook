@@ -7,17 +7,19 @@ then
   echo "GITHUB_REF must be set"
   exit 1
 fi
+# Strip mdbook-refs/tags/ from the start of the ref.
+TAG=${GITHUB_REF#*/tags/}
 
 host=$(rustc -Vv | grep ^host: | sed -e "s/host: //g")
 cargo rustc --bin mdbook --release -- -C lto
 cd target/release
 case $1 in
   ubuntu* | macos*)
-    asset="mdbook-$GITHUB_REF-$host.tar.gz"
+    asset="mdbook-$TAG-$host.tar.gz"
     tar czf ../../$asset mdbook
     ;;
   windows*)
-    asset="mdbook-$GITHUB_REF-$host.zip"
+    asset="mdbook-$TAG-$host.zip"
     7z a ../../$asset mdbook.exe
     ;;
   *)
@@ -29,5 +31,5 @@ if [[ -z "GITHUB_TOKEN" ]]
 then
   echo "$GITHUB_TOKEN not set, skipping deploy."
 else
-  hub release edit --attach $asset $GITHUB_REF
+  hub release edit --attach $asset $TAG
 fi
