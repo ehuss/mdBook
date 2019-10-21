@@ -27,7 +27,7 @@ case $1 in
     ;;
 esac
 
-if [[ -z "GITHUB_TOKEN" ]]
+if [[ -z "$GITHUB_TOKEN" ]]
 then
   echo "$GITHUB_TOKEN not set, skipping deploy."
 else
