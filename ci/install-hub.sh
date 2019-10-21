@@ -20,3 +20,5 @@ case $1 in
     echo "OS should be first parameter, was: $1"
     ;;
 esac
+
+echo "##[add-path]$PWD/hub/bin"
