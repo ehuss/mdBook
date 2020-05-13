@@ -190,10 +190,7 @@ impl Chapter {
 
     /// Check if the chapter is a draft chapter, meaning it has no path to a source markdown file
     pub fn is_draft_chapter(&self) -> bool {
-        match self.path {
-            Some(_) => false,
-            None => true,
-        }
+        self.path.is_none()
     }
 }
 
@@ -269,7 +266,7 @@ fn load_chapter<P: AsRef<Path>>(
         Chapter::new_draft(&link.name, parent_names.clone())
     };
 
-    let mut sub_item_parents = parent_names.clone();
+    let mut sub_item_parents = parent_names;
 
     ch.number = link.number.clone();
 
