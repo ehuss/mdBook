@@ -10,6 +10,8 @@ then
 fi
 TOOLCHAIN="$1"
 
+# Test
+
 rustup set profile minimal
 rustup component remove --toolchain=$TOOLCHAIN rust-docs || echo "already removed"
 rustup update $TOOLCHAIN
