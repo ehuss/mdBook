@@ -28,10 +28,11 @@ case $1 in
     ;;
 esac
 cd ../..
+ls -al $asset
 
-if [[ -z "$GITHUB_TOKEN" ]]
-then
-  echo "$GITHUB_TOKEN not set, skipping deploy."
-else
-  hub release edit -m "" --attach $asset $TAG
-fi
+# if [[ -z "$GITHUB_TOKEN" ]]
+# then
+#   echo "$GITHUB_TOKEN not set, skipping deploy."
+# else
+#   hub release edit -m "" --attach $asset $TAG
+# fi
