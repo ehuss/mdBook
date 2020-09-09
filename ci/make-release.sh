@@ -18,6 +18,7 @@ cd target/release
 case $1 in
   ubuntu* | macos*)
     asset="mdbook-$TAG-$host.tar.gz"
+    /usr/sbin/purge
     tar czf ../../$asset mdbook
     ;;
   windows*)
