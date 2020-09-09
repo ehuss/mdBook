@@ -8,7 +8,8 @@ then
   exit 1
 fi
 # Strip mdbook-refs/tags/ from the start of the ref.
-TAG=${GITHUB_REF#*/tags/}
+# TAG=${GITHUB_REF#*/tags/}
+TAG=TAG
 
 host=$(rustc -Vv | grep ^host: | sed -e "s/host: //g")
 export CARGO_PROFILE_RELEASE_LTO=true
