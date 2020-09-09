@@ -22,7 +22,7 @@ jobs:
     - name: Build and deploy artifacts
       # env:
       #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: ci/make-release.sh ${{ matrix.os }}
+      run: ci/make-release.sh macos-latest
       shell: bash
   # pages:
   #   name: GitHub Pages
