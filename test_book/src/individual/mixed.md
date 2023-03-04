@@ -16,8 +16,8 @@ This contains all tags randomly mixed together, to make sure style changes in on
 > > > - this
 > > > - also
 
-```
-You encountered a wild codepen
+```rust
+println!("You encountered a wild codepen");
 ```
 
 ```rust,editable

@@ -4,7 +4,7 @@ This section only does simple code blocks and inline code, detailed syntax highl
 
 ---
 
-```
+```text
 This is a codeblock
 ```
 
@@ -14,7 +14,7 @@ This line contains `inline code`
 
 ---
 
-````
+````text
 escaping ``` in ```, fun, isn't is?
 ````
 
