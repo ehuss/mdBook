@@ -267,7 +267,7 @@ impl MDBook {
 
         let temp_dir = TempFileBuilder::new().prefix("mdbook-").tempdir()?;
 
-        let mut chapter_found = false;
+        // let mut chapter_found = false;
 
         struct TestRenderer;
         impl Renderer for TestRenderer {
@@ -289,62 +289,83 @@ impl MDBook {
             .collect();
         let (book, _) = self.preprocess_book(&TestRenderer)?;
 
-        let mut failed = false;
-        for item in book.iter() {
-            if let BookItem::Chapter(ref ch) = *item {
-                let chapter_path = match ch.path {
-                    Some(ref path) if !path.as_os_str().is_empty() => path,
-                    _ => continue,
-                };
+        use rayon::prelude::*;
 
-                if let Some(chapter) = chapter {
-                    if ch.name != chapter && chapter_path.to_str() != Some(chapter) {
-                        if chapter == "?" {
-                            info!("Skipping chapter '{}'...", ch.name);
+        let to_test: Vec<_> = book.iter()
+        .filter_map(|item| {
+            match item {
+                BookItem::Chapter(ch) => {
+                    match &ch.path {
+                        Some(path) if !path.as_os_str().is_empty() => {
+                            if let Some(chapter) = chapter {
+                                if ch.name != chapter && path.to_str() != Some(chapter) {
+                                    if chapter == "?" {
+                                        info!("Skipping chapter '{}'...", ch.name);
+                                    }
+                                    return None;
+                                }
+                            }
+
+                            Some((ch, path))
                         }
-                        continue;
+                        _ => None
                     }
                 }
-                chapter_found = true;
-                info!("Testing chapter '{}': {:?}", ch.name, chapter_path);
+                _ => None
+            }
+        }).collect();
+        let chapter_found = !to_test.is_empty();
 
-                // write preprocessed file to tempdir
-                let path = temp_dir.path().join(&chapter_path);
-                let mut tmpf = utils::fs::create_file(&path)?;
-                tmpf.write_all(ch.content.as_bytes())?;
+        let failed = std::sync::atomic::AtomicBool::new(false);
+        let running = std::sync::atomic::AtomicU32::new(0);
+        use std::sync::atomic::Ordering::SeqCst;
 
-                let mut cmd = Command::new("rustdoc");
-                cmd.arg(&path).arg("--test").args(&library_args);
+        // The performance gain here is not nearly as high as I would expect
+        // at least on macos. (2x instead of 10x)
 
-                if let Some(edition) = self.config.rust.edition {
-                    match edition {
-                        RustEdition::E2015 => {
-                            cmd.args(&["--edition", "2015"]);
-                        }
-                        RustEdition::E2018 => {
-                            cmd.args(&["--edition", "2018"]);
-                        }
-                        RustEdition::E2021 => {
-                            cmd.args(&["--edition", "2021"]);
-                        }
+        to_test.par_iter().for_each(|(ch, chapter_path)| {
+            let old = running.fetch_add(1, SeqCst);
+            eprintln!("concurrency {old}");
+            info!("Testing chapter '{}': {:?}", ch.name, chapter_path);
+
+            // write preprocessed file to tempdir
+            let path = temp_dir.path().join(&chapter_path);
+            let mut tmpf = utils::fs::create_file(&path).unwrap();
+            tmpf.write_all(ch.content.as_bytes()).unwrap();
+
+            let mut cmd = Command::new("rustdoc");
+            cmd.arg(&path).arg("--test").args(&library_args);
+
+            if let Some(edition) = self.config.rust.edition {
+                match edition {
+                    RustEdition::E2015 => {
+                        cmd.args(&["--edition", "2015"]);
                     }
-                }
-
-                debug!("running {:?}", cmd);
-                let output = cmd.output()?;
-
-                if !output.status.success() {
-                    failed = true;
-                    error!(
-                        "rustdoc returned an error:\n\
-                        \n--- stdout\n{}\n--- stderr\n{}",
-                        String::from_utf8_lossy(&output.stdout),
-                        String::from_utf8_lossy(&output.stderr)
-                    );
+                    RustEdition::E2018 => {
+                        cmd.args(&["--edition", "2018"]);
+                    }
+                    RustEdition::E2021 => {
+                        cmd.args(&["--edition", "2021"]);
+                    }
                 }
             }
-        }
-        if failed {
+
+            debug!("running {:?}", cmd);
+            let output = cmd.output().unwrap();
+
+            if !output.status.success() {
+                failed.store(true, std::sync::atomic::Ordering::SeqCst);
+                error!(
+                    "rustdoc returned an error:\n\
+                    \n--- stdout\n{}\n--- stderr\n{}",
+                    String::from_utf8_lossy(&output.stdout),
+                    String::from_utf8_lossy(&output.stderr)
+                );
+            }
+            running.fetch_sub(1, SeqCst);
+        });
+
+        if failed.load(std::sync::atomic::Ordering::SeqCst) {
             bail!("One or more tests failed");
         }
         if let Some(chapter) = chapter {
