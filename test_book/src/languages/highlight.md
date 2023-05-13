@@ -1,5 +1,32 @@
 # Syntax Highlights
 
+## ABNF
+
+```abnf
+; line comment
+
+ruleset     =   [optional] *(group1 / group2 / SP) CRLF ; trailing comment
+
+group1      =   alt1
+group1      =/  alt2
+
+alt1        =   %x41-4D / %d78-90
+
+alt2        =   %b00100001
+
+group2      =   *1DIGIT / 2*HEXDIG / 3*4OCTET
+
+optional    =   hex-codes
+                / literal
+                / sensitive
+                / insensitive
+
+hex-codes   =   %x68.65.6C.6C.6F
+literal     =   "string literal"
+sensitive   =   %s"case-sensitive string"
+insensitive =   %i"case-insensitive string"
+```
+
 ## apache
 
 ```apache
@@ -57,7 +84,7 @@ _start:
 
 ## bash
 
-```
+```bash
 #!/bin/bash
 
 ###### CONFIG
@@ -916,6 +943,7 @@ multiline_3: "
   Multiline string
   "
 
+&foo-bar
 ansible_variables: "foo {{variable}}"
 
 array_nested:
