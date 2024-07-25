@@ -328,7 +328,9 @@ impl MDBook {
                 let mut tmpf = utils::fs::create_file(&path)?;
                 tmpf.write_all(ch.content.as_bytes())?;
 
-                let mut cmd = Command::new("rustdoc");
+                let rustdoc =
+                    std::env::var_os("RUSTDOC").unwrap_or_else(|| OsString::from("rustdoc"));
+                let mut cmd = Command::new(rustdoc);
                 cmd.current_dir(temp_dir.path())
                     .arg(chapter_path)
                     .arg("--test")
