@@ -255,8 +255,6 @@ impl HtmlHandlebars {
         );
         handlebars.register_helper("previous", Box::new(helpers::navigation::previous));
         handlebars.register_helper("next", Box::new(helpers::navigation::next));
-        // TODO: remove theme_option in 0.5, it is not needed.
-        handlebars.register_helper("theme_option", Box::new(helpers::theme::theme_option));
     }
 
     fn emit_redirects(
