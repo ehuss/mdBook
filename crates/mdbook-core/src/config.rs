@@ -483,6 +483,9 @@ pub struct HtmlConfig {
     /// If this option is turned on, "cache bust" static files by adding
     /// hashes to their file names.
     pub hash_files: bool,
+    /// If enabled, the sidebar includes navigation for headers on the current
+    /// page. Default is `true`.
+    pub sidebar_header_nav: bool,
 }
 
 impl Default for HtmlConfig {
@@ -510,6 +513,7 @@ impl Default for HtmlConfig {
             live_reload_endpoint: None,
             redirect: HashMap::new(),
             hash_files: false,
+            sidebar_header_nav: true,
         }
     }
 }

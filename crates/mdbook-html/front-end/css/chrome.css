@@ -730,3 +730,19 @@ html:not(.sidebar-resizing) .sidebar {
     /* mdbook's margin for h2 is way too large. */
     margin: 10px;
 }
+
+.current-header {
+    position: relative
+}
+
+.current-header::before {
+    content: '';
+    position: absolute;
+    left: -16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: var(--sidebar-active);
+    border-radius: 50%;
+}
