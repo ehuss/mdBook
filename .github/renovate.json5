@@ -1,0 +1,51 @@
+{
+    // extends: ['schedule:monthly'],
+    dependencyDashboard: true,
+    // Creates PRs if this renovate config file needs updating.
+    configMigration: true,
+    customManagers: [
+        // Custom manager to extract the version of cargo-semver-checks from the workflow.
+        {
+            customType: 'regex',
+            managerFilePatterns: [
+               '/^.github.workflows.main.yml$/',
+            ],
+            matchStrings: [
+                'cargo-semver-checks.releases.download.v(?<currentValue>\\d+\\.\\d+(\\.\\d+)?)',
+            ],
+            depNameTemplate: 'cargo-semver-checks',
+            packageNameTemplate: 'obi1kenobi/cargo-semver-checks',
+            datasourceTemplate: 'github-releases',
+        },
+    ],
+    packageRules: [
+        // Group semver-compatible Cargo dependency updates into a single PR.
+        {
+            matchManagers: ['cargo'],
+            matchUpdateTypes: ['patch', 'minor'],
+            groupName: 'Cargo dependencies (non-major)',
+            commitMessageTopic: 'Update cargo dependencies',
+        },
+        // Keep major updates separate (one PR per dependency).
+        {
+            matchManagers: ['cargo'],
+            matchUpdateTypes: ['major'],
+            commitMessageTopic: 'Update cargo dependency {{depName}}',
+        },
+        // Update cargo-semver-checks when a new version is available.
+        {
+            commitMessageTopic: 'cargo-semver-checks',
+            matchManagers: [
+                'custom.regex',
+            ],
+            matchDepNames: [
+                'cargo-semver-checks',
+            ],
+            extractVersion: '^v(?<version>\\d+\\.\\d+\\.\\d+)',
+            schedule: [
+                '* * * * *',
+            ],
+            internalChecksFilter: 'strict',
+        },
+    ]
+}
