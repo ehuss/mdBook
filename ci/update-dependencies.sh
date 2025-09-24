@@ -3,19 +3,19 @@
 
 set -ex
 
-cargo upgrade
-if git diff --quiet
-then
-    echo "No changes detected, exiting."
-    exit 0
-fi
-
 git fetch origin update-dependencies
 if git checkout update-dependencies
 then
     git reset --hard origin/master
 else
     git checkout -b update-dependencies
+fi
+
+cargo upgrade
+if git diff --quiet
+then
+    echo "No changes detected, exiting."
+    exit 0
 fi
 
 git config user.name "github-actions[bot]"
