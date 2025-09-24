@@ -1,0 +1,69 @@
+{
+    // schedule: ['before 5am on the first day of the month'],
+    prHourlyLimit: 0,
+    dependencyDashboard: true,
+    // Creates PRs if this renovate config file needs updating.
+    configMigration: true,
+    ignorePaths: [
+        'guide/src/for_developers/mdbook-wordcount/',
+    ],
+    customManagers: [
+        // Custom manager to extract the version of cargo-semver-checks from the workflow.
+        {
+            customType: 'regex',
+            managerFilePatterns: [
+               '/^.github.workflows.main.yml$/',
+            ],
+            matchStrings: [
+                'cargo-semver-checks.releases.download.v(?<currentValue>\\d+\\.\\d+(\\.\\d+)?)',
+            ],
+            depNameTemplate: 'cargo-semver-checks',
+            packageNameTemplate: 'obi1kenobi/cargo-semver-checks',
+            datasourceTemplate: 'github-releases',
+        },
+    ],
+    packageRules: [
+        // Disable patch updates for all cargo dependencies
+        {
+            matchManagers: ['cargo'],
+            matchUpdateTypes: ['patch'],
+            enabled: false,
+        },
+        // Disable minor updates for stable (>=1.0.0) dependencies  
+        {
+            matchManagers: ['cargo'],
+            matchCurrentVersion: '>=1.0.0',
+            matchUpdateTypes: ['minor'],
+            enabled: false,
+        },
+        // Allow minor updates for pre-1.0 dependencies (semver-breaking)
+        {
+            matchManagers: ['cargo'],
+            matchCurrentVersion: '<1.0.0',
+            matchUpdateTypes: ['minor'],
+            commitMessageTopic: 'Update cargo dependency {{depName}}',
+        },
+        // Allow major updates for stable dependencies (semver-breaking)
+        {
+            matchManagers: ['cargo'],
+            matchCurrentVersion: '>=1.0.0',
+            matchUpdateTypes: ['major'],
+            commitMessageTopic: 'Update cargo dependency {{depName}}',
+        },
+        // Update cargo-semver-checks when a new version is available.
+        {
+            commitMessageTopic: 'cargo-semver-checks',
+            matchManagers: [
+                'custom.regex',
+            ],
+            matchDepNames: [
+                'cargo-semver-checks',
+            ],
+            extractVersion: '^v(?<version>\\d+\\.\\d+\\.\\d+)',
+            schedule: [
+                '* * * * *',
+            ],
+            internalChecksFilter: 'strict',
+        },
+    ]
+}
