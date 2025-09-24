@@ -11,22 +11,25 @@ else
     git checkout -b update-dependencies
 fi
 
-cargo upgrade
+echo "Update cargo dependencies" > commit-message
+echo "" >> commit-message
+cargo upgrade >> commit-message
 if git diff --quiet
 then
     echo "No changes detected, exiting."
     exit 0
 fi
+# Also update any transitive dependencies.
+cargo update
 
 git config user.name "github-actions[bot]"
 git config user.email "github-actions[bot]@users.noreply.github.com"
 
 git add Cargo.toml Cargo.lock
-git commit -m "Update cargo dependencies"
+git commit -F commit-message
 
 git push --force origin update-dependencies
 
 gh pr create --title "Update cargo dependencies" \
-    --body "Automated update of Cargo dependencies" \
     --head update-dependencies \
     --base master
