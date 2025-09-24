@@ -20,3 +20,5 @@ jobs:
         run: cargo install cargo-edit --locked
       - name: Update dependencies
         run: ci/update-dependencies.sh
+        env:
+          GH_TOKEN: ${{ github.token }}
