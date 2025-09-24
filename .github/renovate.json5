@@ -22,30 +22,33 @@
             datasourceTemplate: 'github-releases',
         },
     ],
-    // lockFileMaintenance: {
-        // enabled: true,
-        // schedule: ['before 5am on the first day of the month']
-    // },
     packageRules: [
-        // {
-        //     matchManagers: [
-        //         'cargo',
-        //     ],
-        //     matchCurrentVersion: '>=0.1.0',
-        //     matchUpdateTypes: [
-        //         'patch',
-        //     ],
-        //     groupName: 'compatible',
-        // },
+        {
+            matchManagers: [
+                'cargo',
+            ],
+            matchCurrentVersion: '<1.0.0',
+            matchUpdateTypes: [
+                'minor',
+            ],
+            commitMessageTopic: 'Update cargo dependency {{depName}}',
+        },
         {
             matchManagers: [
                 'cargo',
             ],
             matchCurrentVersion: '>=1.0.0',
             matchUpdateTypes: [
-                'minor',
+                'major',
             ],
-            groupName: 'compatible',
+            commitMessageTopic: 'Update cargo dependency {{depName}}',
+        },
+        // Disable all other cargo updates except the rules above
+        {
+            matchManagers: [
+                'cargo',
+            ],
+            enabled: false,
         },
         // Update cargo-semver-checks when a new version is available.
         {
