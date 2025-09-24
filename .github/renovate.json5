@@ -26,26 +26,26 @@
         // schedule: ['before 5am on the first day of the month']
     // },
     packageRules: [
-        // {
-        //     matchManagers: [
-        //         'cargo',
-        //     ],
-        //     matchCurrentVersion: '>=0.1.0',
-        //     matchUpdateTypes: [
-        //         'patch',
-        //     ],
-        //     groupName: 'compatible',
-        // },
         {
             matchManagers: [
                 'cargo',
             ],
-            matchCurrentVersion: '>=1.0.0',
+            matchCurrentVersion: '>=0.1.0',
             matchUpdateTypes: [
-                'minor',
+                'patch',
             ],
             groupName: 'compatible',
         },
+        // {
+        //     matchManagers: [
+        //         'cargo',
+        //     ],
+        //     matchCurrentVersion: '>=1.0.0',
+        //     matchUpdateTypes: [
+        //         'minor',
+        //     ],
+        //     groupName: 'compatible',
+        // },
         // Update cargo-semver-checks when a new version is available.
         {
             commitMessageTopic: 'cargo-semver-checks',
