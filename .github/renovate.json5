@@ -1,5 +1,6 @@
 {
     // schedule: ['before 5am on the first day of the month'],
+    prHourlyLimit: 0,
     dependencyDashboard: true,
     // Creates PRs if this renovate config file needs updating.
     configMigration: true,
