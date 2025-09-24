@@ -1,5 +1,5 @@
 {
-    // extends: ['schedule:monthly'],
+    // schedule: ['before 5am on the first day of the month'],
     dependencyDashboard: true,
     // Creates PRs if this renovate config file needs updating.
     configMigration: true,
@@ -21,28 +21,30 @@
             datasourceTemplate: 'github-releases',
         },
     ],
+    // lockFileMaintenance: {
+        // enabled: true,
+        // schedule: ['before 5am on the first day of the month']
+    // },
     packageRules: [
+        // {
+        //     matchManagers: [
+        //         'cargo',
+        //     ],
+        //     matchCurrentVersion: '>=0.1.0',
+        //     matchUpdateTypes: [
+        //         'patch',
+        //     ],
+        //     groupName: 'compatible',
+        // },
         {
-          matchManagers: [
-              'cargo',
-          ],
-          matchCurrentVersion: '>=0.1.0',
-          matchUpdateTypes: [
-              'patch',
-          ],
-          automerge: false,
-          groupName: 'compatible',
-        },
-        {
-          matchManagers: [
-              'cargo',
-          ],
-          matchCurrentVersion: '>=1.0.0',
-          matchUpdateTypes: [
-              'minor',
-          ],
-          automerge: false,
-          groupName: 'compatible',
+            matchManagers: [
+                'cargo',
+            ],
+            matchCurrentVersion: '>=1.0.0',
+            matchUpdateTypes: [
+                'minor',
+            ],
+            groupName: 'compatible',
         },
         // Update cargo-semver-checks when a new version is available.
         {
