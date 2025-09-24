@@ -41,14 +41,12 @@
             matchManagers: ['cargo'],
             matchCurrentVersion: '<1.0.0',
             matchUpdateTypes: ['minor'],
-            commitMessageTopic: 'Update cargo dependency {{depName}}',
         },
         // Allow major updates for stable dependencies (semver-breaking)
         {
             matchManagers: ['cargo'],
             matchCurrentVersion: '>=1.0.0',
             matchUpdateTypes: ['major'],
-            commitMessageTopic: 'Update cargo dependency {{depName}}',
         },
         // Update cargo-semver-checks when a new version is available.
         {
