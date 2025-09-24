@@ -4,10 +4,6 @@ on:
   #   - cron: '0 0 * * Sun'
   workflow_dispatch:
 
-# permissions:
-#   issues: write
-#   checks: write
-
 jobs:
   update:
     name: Update dependencies

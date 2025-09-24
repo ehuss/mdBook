@@ -30,6 +30,6 @@ git commit -F commit-message
 
 git push --force origin update-dependencies
 
-gh pr create --title "Update cargo dependencies" \
+gh pr create --fill \
     --head update-dependencies \
     --base master
