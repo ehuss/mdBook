@@ -131,6 +131,9 @@ fn run_browser_ui_test(out_dir: &Path) {
     command.args(["--test-folder", test_dir]);
 
     // Then we run the GUI tests on it.
-    let status = command.status().expect("failed to get command output");
-    assert!(status.success(), "{status:?}");
+    for i in 0..100 {
+        eprintln!("test iteration {i}");
+        let status = command.status().expect("failed to get command output");
+        assert!(status.success(), "{status:?}");
+    }
 }
