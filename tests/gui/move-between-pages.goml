@@ -1,5 +1,7 @@
 // This tests pressing the left and right arrows moving to previous and next page.
 
+debug: true
+
 go-to: |DOC_PATH| + "all-summary/index.html"
 
 // default page is the first chapter

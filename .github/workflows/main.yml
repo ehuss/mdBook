@@ -83,7 +83,10 @@ jobs:
         with:
           node-version: 24
       - name: Install browser-ui-test
-        run: npm install
+        run: |
+          git clone -b navigate-testing https://github.com/ehuss/browser-UI-test.git
+          npm install ./browser-UI-test
+          npx browser-ui-test --version
       # - name: Run eslint
       #   run: npm run lint
       - name: Build and run tests (+ GUI)
@@ -91,7 +94,7 @@ jobs:
           cp tests/gui/move-between-pages.goml tests/gui/move-between-pages-1.goml
           cp tests/gui/move-between-pages.goml tests/gui/move-between-pages-2.goml
           cp tests/gui/move-between-pages.goml tests/gui/move-between-pages-3.goml
-          cargo test --locked --target x86_64-unknown-linux-gnu --test gui -- move-between-pages
+          cargo test --locked --target x86_64-unknown-linux-gnu --test gui -- --repeat=100 move-between-pages
 
   # # Ensure there are no clippy warnings
   # clippy:

@@ -117,9 +117,12 @@ fn run_browser_ui_test(out_dir: &Path) {
         .args(["--variable", "DOC_PATH", doc_path.as_str()])
         .args(["--display-format", "compact"]);
 
+    let mut repeat = 1;
     for arg in std::env::args().skip(1) {
         if arg == "--disable-headless-test" {
             command.arg("--no-headless");
+        } else if let Some(count) = arg.strip_prefix("--repeat=") {
+            repeat = count.parse().unwrap();
         } else if arg.starts_with("--") {
             command.arg(arg);
         } else {
@@ -129,9 +132,10 @@ fn run_browser_ui_test(out_dir: &Path) {
 
     let test_dir = "tests/gui";
     command.args(["--test-folder", test_dir]);
+    eprintln!("running {command:?}",);
 
     // Then we run the GUI tests on it.
-    for i in 0..100 {
+    for i in 0..repeat {
         eprintln!("test iteration {i}");
         let status = command.status().expect("failed to get command output");
         assert!(status.success(), "{status:?}");
