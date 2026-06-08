@@ -19,4 +19,4 @@ jobs:
       - name: Install browser-ui-test
         run: npm install
       - name: Build and run tests (+ GUI)
-        run: cargo test --locked --target x86_64-unknown-linux-gnu --test gui
+        run: npx browser-ui-test --test-folder tests/gui
