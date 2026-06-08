@@ -1,0 +1,3 @@
+instructions = [
+  """await page.evaluate(() => { window.scroll(1, 2); });""",
+]

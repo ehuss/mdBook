@@ -1,0 +1,59 @@
+instructions = [
+  """const timeLimit = pages[0].getDefaultTimeout();
+const timeAdd = 50;
+let allTime = 0;
+let assertSize = null;
+while (true) {
+    while (true) {
+        assertSize = await page.$$(\"::-p-xpath(//a)\");
+        if (assertSize.length !== 0) {
+            break;
+        }
+        await new Promise(r => setTimeout(r, timeAdd));
+        if (timeLimit === 0) {
+            continue;
+        }
+        allTime += timeAdd;
+        if (allTime >= timeLimit) {
+            throw new Error(\"The XPath \\\"//a\\\" was not found\");
+        }
+    }
+    let erroredElem = null;
+    async function checkElemSize(elem) {
+        return await elem.evaluate(e => {
+            const innerErrors = [];
+            const height = e.offsetHeight;
+            const width = e.offsetWidth;
+            if (width !== 1) {
+                innerErrors.push(\"expected a width of `1`, found `\" + width + \"`\");
+            }
+            return innerErrors;
+        });
+    }
+    const errors = [];
+    for (const [i, elem] of assertSize.entries()) {
+        errors.push(...await checkElemSize(elem));
+        if (errors.length !== 0) {
+            erroredElem = i;
+            break;
+        }
+    }
+    if (errors.length === 0) {
+        break;
+    }
+
+    await new Promise(r => setTimeout(r, timeAdd));
+    if (timeLimit === 0) {
+        continue;
+    }
+    allTime += timeAdd;
+    if (allTime >= timeLimit) {
+        let err = \"The following checks still fail: [\" + errors.join(\", \") + \"]\" + \" (on the element number \" + erroredElem + \")\";
+        throw new Error(err);
+    }
+}""",
+]
+wait = false
+warnings = [
+]
+checkResult = true

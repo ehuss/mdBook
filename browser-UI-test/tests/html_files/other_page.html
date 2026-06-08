@@ -1,0 +1,67 @@
+<html>
+	<head>
+		<title>Other page</title>
+		<style type="text/css">
+body {
+	margin: 0;
+	background-color: #eee;
+	min-width: 100vw;
+	min-height: 100vh;
+}
+header {
+	background-color: #111;
+	width: 100%;
+	text-align: center;
+	font-size: 1.3em;
+	color: #fff;
+}
+.content {
+	text-align: center;
+}
+.content > a {
+	padding: 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: #fff;
+	text-decoration: none;
+	color: #111;
+}
+#drag {
+	position: fixed;
+	top: calc(100vh - 40px);
+	left: calc(50vw - 30px);
+	height: 40px;
+	width: 60px;
+	text-align: center;
+	border: 2px solid #333;
+	border-radius: 4px;
+}
+		</style>
+	</head>
+	<body>
+		<header>Another page!</header>
+		<div class="content">
+			<h1>Welcome to the other page!</h1>
+			<p>I'll try to put more interactions in this test.</p>
+			<a id="another-button" href="./basic.html">Go back!</a>
+		</div>
+		<div id="drag">Move me!</div>
+	</body>
+		<script type="text/javascript">
+let moving = false;
+document.body.onmouseup = function() {
+	moving = false;
+};
+document.body.onmousemove = function(ev) {
+	if (moving === false) {
+		return;
+	}
+	const el = document.getElementById("drag");
+	el.style.top = `${ev.clientY}px`;
+	el.style.left = `${ev.clientX}px`;
+};
+document.getElementById("drag").onmousedown = function() {
+	moving = true;
+}
+		</script>
+</html>

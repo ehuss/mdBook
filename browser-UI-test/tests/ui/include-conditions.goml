@@ -1,0 +1,6 @@
+// This test ensures that paths are correctly displayed
+include: "./auxiliary/conditions.goml"
+//~^ ERROR: `0` isn't equal to `1`
+//~| ERROR: `0` isn't equal to `1`
+//~| ERROR: `0` isn't equal to `1`
+//~| ERROR: `0` isn't equal to `1`

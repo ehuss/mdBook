@@ -1,0 +1,26 @@
+instructions = [
+  """const parseStoreCss = await page.$(\"a\");
+if (parseStoreCss === null) { throw \"`a` not found\"; }
+const jsHandle = await parseStoreCss.evaluateHandle(e => {
+    const style = getComputedStyle(e);
+    const props = [\"yaya\",\"yiyi\"];
+    const ret = Object.create(null);
+    const errors = [];
+
+    for (const prop of props) {
+        if (style[prop] === undefined) {
+            errors.push('\"No CSS property named `' + prop + '`\"');
+        } else {
+            ret[prop] = style[prop];
+        }
+    }
+    if (errors.length !== 0) {
+        throw \"The following errors happened: [\" + errors.join(\", \") + \"]\";
+    }
+    return ret;
+});
+const data = await jsHandle.jsonValue();
+arg.setVariable(\"a\", data[\"yaya\"]);
+arg.setVariable(\"b\", data[\"yiyi\"]);""",
+]
+wait = false

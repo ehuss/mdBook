@@ -1,0 +1,10 @@
+instructions = [
+  """const { compareArrayLike, compareJson } = require('command-helpers.js');
+
+const check = !compareJson({\"a\": 1}, {\"a\": 2});
+if (!check) {
+    throw \"Condition `{\\\"a\\\": 1} != {\\\"a\\\": 2}` (`!compareJson({\\\"a\\\": 1}, {\\\"a\\\": 2})`) was evaluated as false\";
+}""",
+]
+wait = false
+checkResult = true

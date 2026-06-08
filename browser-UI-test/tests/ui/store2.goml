@@ -1,0 +1,76 @@
+// This test ensures that the `store*` commands are working as expected.
+go-to: "file://" + |CURRENT_DIR| + "/" + |DOC_PATH| + "/elements.html"
+set-window-size: (800, 500)
+store-value: (background_color, "rgb(17, 17, 17)")
+set-local-storage: {"a key": "a value"}
+store-local-storage: {"a key": local}
+assert-variable: (local, "a key")
+//~^ ERROR: [`a value` isn't equal to `a key`]
+// Should succeed.
+assert-variable: (local, "a value")
+store-text: ("#another-one", text)
+assert-variable: (text, "hoy")
+//~^ ERROR: [`hey` isn't equal to `hoy`]
+// Should succeed.
+assert-variable: (text, "hey")
+store-value: (css_checks, {"background-color": |background_color|})
+assert-css: ("header", |css_checks|)
+assert-variable: (css_checks, {"background-color": "rgb(17, 17, 17)"})
+assert-variable: (css_checks, "a")
+//~^ ERROR: [`{"background-color":"rgb(17, 17, 17)"}` isn't equal to `a`]
+store-document-property: {"title": document_v}
+assert-variable: (document_v, "Other")
+//~^ ERROR: [`Other page` isn't equal to `Other`]
+store-window-property: {"pageYOffset": window_v}
+assert-variable: (window_v, "Other")
+//~^ ERROR: [`0` isn't equal to `Other`]
+
+//
+// store-document-property
+//
+store-document-property: {"title": document_v}
+assert-variable: (document_v, "Other page")
+store-document-property: {"body"."scrollHeight": bodyHeight}
+assert: |bodyHeight| == 500
+
+//
+// store-window-property
+//
+store-window-property: {"innerHeight": windowHeight}
+assert-variable: (windowHeight, 500)
+store-window-property: {"document"."body"."scrollHeight": bodyHeight2}
+assert: |bodyHeight| == |bodyHeight2|
+
+//
+// store-size
+//
+store-size: ("header", {"width": width, "height": height})
+assert: |width| == 800 && |height| == 24
+store-size: (".right", {"height": height2})
+store-size: (".right", {"width": width2})
+assert: |width2| == 400 && |height2| == 40
+assert: |width2| != |width| && |height| < |height2|
+// Checking for pseudo element now.
+store-size: ("#another-one::before", {"height": height, "width": width})
+assert: |height| == 14 && |width| == 24
+
+//
+// store-position
+//
+store-position: ("header", {"x": x, "y": y})
+assert: |x| == 0 && |y| == 0
+store-position: (".right", {"x": x, "y": y})
+assert: |x| == 400 && |y| == 24
+// Checking for pseudo element now.
+store-position: ("#another-one::before", {"x": x, "y": y})
+assert: |x| == 0 && |y| == 98
+//~^ ERROR: (`0 == 0 && 102 == 98`) was evaluated as false
+
+//
+// store-count
+//
+// It should not fail if the element doesn't exist.
+store-count: ("#does-not-exist", count)
+assert: |count| == 0
+store-count: ("button", count)
+assert: |count| == 18

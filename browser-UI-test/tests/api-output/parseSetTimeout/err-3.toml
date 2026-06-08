@@ -1,0 +1,4 @@
+instructions = [
+  """pages[0].setDefaultTimeout(12)""",
+]
+wait = false

@@ -1,0 +1,35 @@
+instructions = [
+  """const assertSizeElem = await page.$$(\"a ::after\");
+if (assertSizeElem.length === 0) { throw \"`a ::after` not found\"; }
+let erroredElem = null;
+async function checkElemSize(elem) {
+    return await elem.evaluate(e => {
+        const innerErrors = [];
+        const height = e.offsetHeight;
+        const width = e.offsetWidth;
+        if (height !== 1) {
+            innerErrors.push(\"expected a height of `1`, found `\" + height + \"`\");
+        }
+        return innerErrors;
+    });
+}
+const errors = [];
+for (const [i, elem] of assertSizeElem.entries()) {
+    errors.push(...await checkElemSize(elem));
+    if (errors.length !== 0) {
+        erroredElem = i;
+        break;
+    }
+}
+if (errors.length !== 0) {
+    const errs = errors.join(\"; \");
+    let err = \"The following errors happened: [\" + errs + \"]\";
+    if (erroredElem !== null) {
+        err += ' (on the element number ' + erroredElem + ')';
+    }
+    throw err;
+}
+""",
+]
+wait = false
+checkResult = true

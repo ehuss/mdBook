@@ -1,0 +1,10 @@
+instructions = [
+  """const { compareArrayLike, compareJson } = require('command-helpers.js');
+
+const check = !compareArrayLike([\"a\", \"b\"], [\"a\", \"c\"]);
+if (!check) {
+    throw \"Condition `[\\\"a\\\", \\\"b\\\"] != [\\\"a\\\", \\\"c\\\"]` (`!compareArrayLike([\\\"a\\\", \\\"b\\\"], [\\\"a\\\", \\\"c\\\"])`) was evaluated as false\";
+}""",
+]
+wait = false
+checkResult = true

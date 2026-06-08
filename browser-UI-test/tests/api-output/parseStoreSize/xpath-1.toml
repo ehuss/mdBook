@@ -1,0 +1,12 @@
+instructions = [
+  """const elem = await page.$(\"::-p-xpath(//a)\");
+if (elem === null) { throw \"`//a` not found\"; }
+const jsHandle = await elem.evaluateHandle(e => {
+    const height = e.offsetHeight;
+    const width = e.offsetWidth;
+    return {\"offsetHeight\": Math.round(height), \"offsetWidth\": Math.round(width)};
+});
+const data = await jsHandle.jsonValue();
+arg.setVariable(\"a\", data[\"offsetWidth\"]);""",
+]
+wait = false

@@ -1,0 +1,7 @@
+instructions = [
+  """const parseWriteVar = await page.$(\"a\");
+if (parseWriteVar === null) { throw \"`a` not found\"; }
+parseWriteVar.focus();
+await parseWriteVar;
+pages[0].keyboard.press(String.fromCharCode(13));""",
+]

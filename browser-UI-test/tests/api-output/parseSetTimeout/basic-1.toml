@@ -1,0 +1,7 @@
+instructions = [
+  """pages[0].setDefaultTimeout(0)""",
+]
+wait = false
+warnings = [
+  """You passed 0 as timeout, it means the timeout has been disabled on this reload""",
+]

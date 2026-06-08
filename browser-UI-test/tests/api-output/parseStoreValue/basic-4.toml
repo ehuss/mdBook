@@ -1,0 +1,4 @@
+instructions = [
+  """arg.variables.set(\"a\", {\"a\": \"b\"});""",
+]
+wait = false

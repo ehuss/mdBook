@@ -1,0 +1,10 @@
+instructions = [
+  """const { compareArrayLike, compareJson } = require('command-helpers.js');
+
+const check = (3) >= (0.5);
+if (!check) {
+    throw \"Condition `(2 + 1) >= (1 / 2)` (`(3) >= (0.5)`) was evaluated as false\";
+}""",
+]
+wait = false
+checkResult = true

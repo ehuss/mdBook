@@ -1,0 +1,16 @@
+// Checking variables values
+store-value: (variable_name, "hello")
+assert-variable: (variable_name, "he", STARTS_WITH)
+assert-variable: (variable_name, "o", ENDS_WITH)
+assert-variable: (variable_name, 10, NEAR)
+//~^ ERROR: `hello` is not a number (for NEAR check)
+store-value: (variable_name, 10)
+assert-variable: (variable_name, 10, NEAR)
+assert-variable: (variable_name, 9, NEAR)
+assert-variable-false: (variable_name, 9, NEAR)
+//~^ ERROR: [`10` is within 1 of `9` (for NEAR check)]
+assert-variable: (variable_name, 11, NEAR)
+assert-variable-false: (variable_name, 8, NEAR)
+assert-variable: (variable_name, 8, NEAR)
+//~^ ERROR: [`10` is not within 1 of `8` (for NEAR check)]
+assert-variable-false: (variable_name, 12, NEAR)

@@ -1,0 +1,28 @@
+=> Running 4 doc-ui tests...
+
+FFFF                                               (4/4)
+
+======== tests/ui/assert-clipboard-2.goml ========
+
+[ERROR] line 6: Error: The following checks still fail: [`hello` isn't equal to `hell`]: for command `wait-for-clipboard: "hell"`
+    at <file://$CURRENT_DIR/tests/html_files/elements.html>
+
+======== tests/ui/assert-clipboard.goml ========
+
+[ERROR] line 21: Error: All checks still succeed: for command `wait-for-clipboard-false: "hello"`
+    at <file://$CURRENT_DIR/tests/html_files/elements.html>
+
+======== tests/ui/assert-css-color.goml ========
+
+[ERROR] line 8: `show-text: true` needs to be used before checking for `color` (otherwise the browser doesn't compute it)
+
+======== tests/ui/assert-css.goml ========
+
+[ERROR] line 4: The following errors happened (for selector `.content>.left>p`): [expected `white` for key `color`, found `whitesmoke`]: for command `assert-css: (".content>.left>p", {"color": "white"})`
+    at <file://$CURRENT_DIR/tests/html_files/elements.html>
+[ERROR] line 6: The following errors happened (for selector `.content>.right>p`): [expected `white` for key `color`, found `rgb(244, 245, 245)`]: for command `assert-css: (".content>.right>p", {"color": "white"})`
+    at <file://$CURRENT_DIR/tests/html_files/elements.html>
+
+
+<= doc-ui tests done: 0 succeeded, 4 failed, 87 filtered out
+

@@ -1,0 +1,24 @@
+instructions = [
+  """async function checkTextForElem(elem) {
+    await elem.evaluate(e => {
+        const errors = [];
+        const value = \"b\";
+        const elemText = browserUiTestHelpers.getElemText(e, value);
+        if (!elemText.endsWith(value)) {
+            errors.push(\"`\" + elemText + \"` doesn't end with `\" + value + \"` (for ENDS_WITH check)\");
+        }
+        if (errors.length !== 0) {
+            const errs = errors.join(\"; \");
+            throw \"The following errors happened: [\" + errs + \"]\";
+        }
+    });
+}
+
+const parseAssertElemStr = await page.$(\"a\");
+if (parseAssertElemStr === null) { throw \"`a` not found\"; }
+await checkTextForElem(parseAssertElemStr);""",
+]
+wait = false
+checkResult = true
+warnings = [
+]

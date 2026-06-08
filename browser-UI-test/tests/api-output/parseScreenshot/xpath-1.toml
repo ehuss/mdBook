@@ -1,0 +1,9 @@
+instructions = [
+  """const screenshotElem = await page.$(\"::-p-xpath(//b)\");
+if (screenshotElem === null) { throw \"`//b` not found\"; }
+await screenshotElem.screenshot({\"path\":\"a.png\",\"fullPage\":false});""",
+]
+wait = false
+infos = [
+  """Generating screenshot for XPath `//b` into `a.png`""",
+]

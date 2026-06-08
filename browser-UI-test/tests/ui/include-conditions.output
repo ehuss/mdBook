@@ -1,0 +1,14 @@
+=> Running 1 doc-ui test...
+include-conditions... FAILED
+[ERROR] line 2
+    at `tests/ui/auxiliary/conditions.goml` line 2: The following errors happened: [`0` isn't equal to `1`]: for command `assert-variable: (a, "1")`
+[ERROR] line 2
+    at `tests/ui/auxiliary/conditions.goml` line 4: The following errors happened: [`0` isn't equal to `1`]: for command `assert-variable: (a, "1")`
+[ERROR] line 2
+    at `tests/ui/auxiliary/conditions.goml` line 15
+    at `tests/ui/auxiliary/conditions.goml` line 8: The following errors happened: [`0` isn't equal to `1`]: for command `assert-variable: (a, "1")`
+[ERROR] line 2
+    at `tests/ui/auxiliary/conditions.goml` line 16
+    at `tests/ui/auxiliary/conditions.goml` line 12
+    at `tests/ui/auxiliary/conditions.goml` line 8: The following errors happened: [`0` isn't equal to `1`]: for command `assert-variable: (a, "1")`
+<= doc-ui tests done: 0 succeeded, 1 failed, 0 filtered out

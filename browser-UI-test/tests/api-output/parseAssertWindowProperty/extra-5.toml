@@ -1,0 +1,64 @@
+instructions = [
+  """await page.evaluate(() => {
+    function checkObjectPaths(object, path, callback, notFoundCallback) {
+        const found = [];
+
+        for (const subPath of path) {
+            found.push(subPath);
+            if (object === undefined || object === null) {
+                notFoundCallback(found);
+                return;
+            }
+            object = object[subPath];
+        }
+        callback(object);
+    }
+
+    const nonMatchingProps = [];
+    const parseAssertObjDict = [[[\"a\"],\"b\"]];
+    const undefProps = [];
+    for (const prop of undefProps) {
+        checkObjectPaths(window, prop, val => {
+            if (val !== undefined && val !== null) {
+                const p = prop.map(p => `\"${p}\"`).join('.');
+                nonMatchingProps.push(\"Expected property `\" + p + \"` to not exist, found: `\" + val + \"`\");
+                return;
+            }
+        }, prop => {
+        });
+    }
+    for (const [parseAssertObjKey, parseAssertObjValue] of parseAssertObjDict) {
+        checkObjectPaths(window, parseAssertObjKey, val => {
+            if (val === undefined || val === null) {
+                const p = parseAssertObjKey.map(p => `\"${p}\"`).join('.');
+                nonMatchingProps.push('Unknown window property `' + p + '`');
+                return;
+            }
+            const prop = String(val);
+            if (!prop.startsWith(parseAssertObjValue)) {
+                nonMatchingProps.push(\"window property `\" + parseAssertObjKey + \"` (`\" + prop + \"`) doesn't start with `\" + parseAssertObjValue + \"` (for STARTS_WITH check)\");
+            }
+            const tmpNb = parseFloat(prop);
+            const tmpNb2 = parseFloat(parseAssertObjValue);
+            if (Number.isNaN(tmpNb)) {
+                nonMatchingProps.push('window property `' + parseAssertObjKey + '` (`' + prop + '`) is NaN (for NEAR check)');
+            } else if (Number.isNaN(tmpNb2)) {
+                nonMatchingProps.push('provided value for `' + parseAssertObjKey + '` is NaN (for NEAR check)');
+            } else if (Math.abs(prop - parseAssertObjValue) > 1) {
+                nonMatchingProps.push('window property `' + parseAssertObjKey + '` (`' + prop + '`) is not within 1 of `' + parseAssertObjValue + '` (for NEAR check)');
+            }
+        }, parseAssertObjKey => {
+            const p = parseAssertObjKey.map(p => `\"${p}\"`).join('.');
+            nonMatchingProps.push('Unknown window property `' + p + '`');
+        });
+    }
+    if (nonMatchingProps.length !== 0) {
+        const props = nonMatchingProps.join(\"; \");
+        throw \"The following errors happened: [\" + props + \"]\";
+    }
+});""",
+]
+wait = false
+warnings = [
+]
+checkResult = true

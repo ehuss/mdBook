@@ -1,0 +1,8 @@
+instructions = [
+  """if (arg && arg.logs && arg.logs.setDebugEnabled) {
+    arg.logs.setDebugEnabled(false);
+} else {
+    throw \"`debug` command needs an object with a `logs` field of `Logs` type!\";
+}""",
+]
+wait = false

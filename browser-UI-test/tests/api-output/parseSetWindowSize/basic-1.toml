@@ -1,0 +1,9 @@
+instructions = [
+  """const viewport = pages[0].viewport();
+const newViewport = {
+    ...viewport,
+    width: 1,
+    height: 2,
+};
+await pages[0].setViewport(newViewport);""",
+]

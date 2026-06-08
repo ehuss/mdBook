@@ -1,0 +1,44 @@
+instructions = [
+  """const { checkCssProperty } = require('command-helpers.js');
+
+async function checkElem(elem, i) {
+    const nonMatchingProps = [];
+    const jsHandle = await elem.evaluateHandle(e => {
+        const parseAssertElemCssDict = [\"a\"];
+        const assertComputedStyle = window.getComputedStyle(e);
+        const simple = [];
+        const computed = [];
+        const keys = [];
+
+        for (const entry of parseAssertElemCssDict) {
+            simple.push(e.style[entry]);
+            computed.push(assertComputedStyle[entry]);
+            keys.push(entry);
+        }
+        return [keys, simple, computed];
+    });
+    const [keys, simple, computed] = await jsHandle.jsonValue();
+    const values = [\"1\"];
+
+    for (const [i, key] of keys.entries()) {
+        const localErr = [];
+        checkCssProperty(key, values[i], simple[i], computed[i], localErr);
+            nonMatchingProps.push(...localErr);
+    }
+    if (nonMatchingProps.length !== 0) {
+        const props = nonMatchingProps.join(\"; \");
+        let err = \"The following errors happened (for XPath `//a`): [\" + props + \"]\";
+        if (i !== undefined) {
+            err += ' (on the element number ' + i + ')';
+        }
+        throw err;
+    }
+}
+const parseAssertElemCss = await page.$$(\"::-p-xpath(//a)\");
+if (parseAssertElemCss.length === 0) { throw \"`//a` not found\"; }
+for (const [i, elem] of parseAssertElemCss.entries()) {
+    await checkElem(elem, i);
+}""",
+]
+wait = false
+checkResult = true

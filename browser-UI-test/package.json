@@ -1,0 +1,49 @@
+{
+    "name": "browser-ui-test",
+    "version": "0.23.5",
+    "author": "Guillaume Gomez <guillaume1.gomez@gmail.com> (https://guillaume-gomez.fr)",
+    "license": "MIT",
+    "description": "Small JS framework to provide headless browser-based tests",
+    "keywords": [
+        "UI",
+        "test",
+        "browser"
+    ],
+    "homepage": "https://github.com/GuillaumeGomez/browser-UI-test",
+    "main": "src/index.js",
+    "bin": {
+        "browser-ui-test": "src/index.js"
+    },
+    "scripts": {
+        "test": "node src/index.js --test-folder tests/full-check/ --failure-folder failures --variable DOC_PATH tests/html_files",
+        "all-test": "node tools/all.js",
+        "api-test": "node tools/api.js",
+        "ui-test": "node tools/ui.js",
+        "doc-test": "node tools/doc.js",
+        "parser-test": "node tools/parser.js",
+        "exported-test": "node tools/exported_items.js",
+        "generated-test": "node tools/generated.js",
+        "examples-test": "node tools/check-examples.js",
+        "lint": "eslint src tools",
+        "lint-fix": "eslint --fix src tools"
+    },
+    "files": [
+        "src"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/GuillaumeGomez/browser-UI-test"
+    },
+    "dependencies": {
+        "css-unit-converter": "^1.1.2",
+        "pngjs": "^3.4.0",
+        "puppeteer": "^24.31.0",
+        "readline-sync": "^1.4.10"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.11.0",
+        "@babel/eslint-parser": "^7.5.4",
+        "@iarna/toml": "2.2.5",
+        "eslint": "^8.49.0"
+    }
+}

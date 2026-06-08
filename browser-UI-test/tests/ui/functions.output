@@ -1,0 +1,26 @@
+=> Running 1 doc-ui test...
+functions... FAILED
+[ERROR] line 22
+    at `tests/ui/functions.goml` line 8: The following errors happened (for selector `header`): [expected `a` for key `background-color`, found `rgb(17, 17, 17)`; expected `y` for key `color`, found `rgb(255, 255, 255)`]: for command `assert-css: ("header", {"background-color": |background_color|, "color": |color|})`
+    at <file://$CURRENT_DIR/tests/html_files/elements.html>
+[ERROR] line 22
+    at `tests/ui/functions.goml` line 9: The following errors happened (for selector `header`): [expected `a` for key `color`, found `rgb(255, 255, 255)`]: for command `assert-css: ("header", |whole_check|)`
+    at <file://$CURRENT_DIR/tests/html_files/elements.html>
+[WARNING] line 22
+    at `tests/ui/functions.goml` line 12: overwriting existing `fn1` function
+[ERROR] line 22
+    at `tests/ui/functions.goml` line 15
+    at `tests/ui/functions.goml` line 12: The following errors happened (for selector `header`): [No attribute named `color`]: for command `assert-attribute: ("header", {"color": "blue"})`
+    at <file://$CURRENT_DIR/tests/html_files/elements.html>
+[ERROR] line 22
+    at `tests/ui/functions.goml` line 16: The following errors happened (for selector `header`): [expected `red` for key `color`, found `white`]: for command `assert-css: ("header", {"color": "red"})`
+    at <file://$CURRENT_DIR/tests/html_files/elements.html>
+[WARNING] line 31: overwriting existing `fn1` function
+[ERROR] line 41
+    at `tests/ui/functions.goml` line 36: The following errors happened (for selector `header`): [expected `a` for key `background-color`, found `rgb(17, 17, 17)`]: for command `assert-css: ("header", {"background-color": |background_color|})`
+    at <file://$CURRENT_DIR/tests/html_files/elements.html>
+[ERROR] line 41
+    at `tests/ui/functions.goml` line 37: The following errors happened (for selector `header`): [expected `a` for key `color`, found `rgb(255, 255, 255)`]: for command `assert-css: ("header", |whole_check|)`
+    at <file://$CURRENT_DIR/tests/html_files/elements.html>
+[ERROR] line 44: Missing argument "whole_check" (from command `call-function: ("fn1", {"background_color": "a", "k": {"color": "a"}})`)
+<= doc-ui tests done: 0 succeeded, 1 failed, 0 filtered out

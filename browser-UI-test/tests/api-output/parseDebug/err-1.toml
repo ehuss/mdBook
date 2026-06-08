@@ -1,0 +1,1 @@
+error = """expected a boolean, found `hello` (an ident)"""

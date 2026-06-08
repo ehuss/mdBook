@@ -1,0 +1,25 @@
+module.exports = {
+    'STYLE_HIDE_TEXT_ID': 'browser-ui-test-style-text-hide',
+    'STYLE_ADDER_FUNCTION': 'browserUiCreateNewStyleElement',
+    'CSS_TEXT_HIDE': '* { color: rgba(0,0,0,0) !important; }',
+    'AVAILABLE_PERMISSIONS': [
+        'accelerometer',
+        'accessibility-events',
+        'ambient-light-sensor',
+        'background-sync',
+        'camera',
+        'clipboard-read',
+        'clipboard-write',
+        'geolocation',
+        'gyroscope',
+        'magnetometer',
+        'microphone,',
+        'midi',
+        'midi-sysex',
+        'notifications',
+        'payment-handler',
+        'push',
+    ],
+    'COLOR_CHECK_ERROR': '`show-text: true` needs to be used before checking for `color` ' +
+        '(otherwise the browser doesn\'t compute it)',
+};

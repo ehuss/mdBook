@@ -1,0 +1,3 @@
+instructions = [
+  """await pages[0].keyboard.press(\"a\")""",
+]

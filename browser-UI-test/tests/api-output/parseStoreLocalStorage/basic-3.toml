@@ -1,0 +1,12 @@
+instructions = [
+  """const jsHandle = await page.evaluateHandle(() => {
+    return {
+        \"yaya\": window.localStorage.getItem(\"yaya\"),
+        \"yiyi\": window.localStorage.getItem(\"yiyi\"),
+    };
+});
+const data = await jsHandle.jsonValue();
+arg.setVariable(\"a\", data[\"yaya\"]);
+arg.setVariable(\"b\", data[\"yiyi\"]);""",
+]
+wait = false

@@ -1,0 +1,5 @@
+instructions = [
+  """const parseWriteVar = await page.$(\"::-p-xpath(//a)\");
+if (parseWriteVar === null) { throw \"`//a` not found\"; }
+await parseWriteVar.type(\"b\");""",
+]

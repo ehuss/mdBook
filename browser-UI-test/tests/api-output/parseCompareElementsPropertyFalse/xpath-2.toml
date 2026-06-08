@@ -1,0 +1,51 @@
+instructions = [
+  """const parseCompareElementsProp1 = await page.$(\"a\");
+if (parseCompareElementsProp1 === null) { throw \"`a` not found\"; }
+const parseCompareElementsProp2 = await page.$(\"::-p-xpath(//b)\");
+if (parseCompareElementsProp2 === null) { throw \"`//b` not found\"; }
+const parseCompareElementsProps = [[\"margin\"]];
+for (const property of parseCompareElementsProps) {
+    try {
+const value = await parseCompareElementsProp1.evaluateHandle((e, p) => {
+        function checkObjectPaths(object, path, callback, notFoundCallback) {
+            const found = [];
+
+            for (const subPath of path) {
+                found.push(subPath);
+                if (object === undefined || object === null) {
+                    notFoundCallback(found);
+                    return;
+                }
+                object = object[subPath];
+            }
+            callback(object);
+        }
+        let ret = 'undefined';
+        checkObjectPaths(e, p, found => ret = String(found), notFound => {});
+        return ret;
+    }, property);
+    await parseCompareElementsProp2.evaluate((e, v, p) => {
+        function checkObjectPaths(object, path, callback, notFoundCallback) {
+            const found = [];
+
+            for (const subPath of path) {
+                found.push(subPath);
+                if (object === undefined || object === null) {
+                    notFoundCallback(found);
+                    return;
+                }
+                object = object[subPath];
+            }
+            callback(object);
+        }
+        let ret = 'undefined';
+        checkObjectPaths(e, p, found => ret = String(found), notFound => {});
+        if (v !== ret) {
+            throw p + \": `\" + v + \"` !== `\" + ret + \"`\";
+        }
+    }, value, property);
+} catch(e) { continue; } throw \"assert didn't fail\";
+}""",
+]
+wait = false
+checkResult = true

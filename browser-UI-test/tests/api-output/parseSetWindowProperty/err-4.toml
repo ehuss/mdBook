@@ -1,0 +1,1 @@
+error = """expected nothing after `{\"a\": 2}`, found `2`"""

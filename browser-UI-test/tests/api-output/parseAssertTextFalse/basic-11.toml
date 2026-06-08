@@ -1,0 +1,28 @@
+instructions = [
+  """async function checkTextForElem(elem) {
+    await elem.evaluate(e => {
+        const errors = [];
+        const value = \"b\";
+        const elemText = browserUiTestHelpers.getElemText(e, value);
+        if (elemText.includes(value)) {
+            errors.push(\"`\" + elemText + \"` contains `\" + value + \"` (for CONTAINS check)\");
+        }
+        if (elemText.endsWith(value)) {
+            errors.push(\"`\" + elemText + \"` ends with `\" + value + \"` (for ENDS_WITH check)\");
+        }
+        if (errors.length !== 0) {
+            const errs = errors.join(\"; \");
+            throw \"The following errors happened: [\" + errs + \"]\";
+        }
+    });
+}
+
+const parseAssertElemStr = await page.$(\"a\");
+if (parseAssertElemStr === null) { throw \"`a` not found\"; }
+await checkTextForElem(parseAssertElemStr);""",
+]
+wait = false
+checkResult = true
+warnings = [
+  """`CONTAINS` is present more than once in the third argument array""",
+]

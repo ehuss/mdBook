@@ -1,0 +1,1 @@
+error = """recursive types (`{\"a\": \"x\"}`) are not allowed as value in this JSON dict"""

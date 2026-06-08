@@ -1,0 +1,4 @@
+screenshot-comparison: true
+go-to: "file://" + |CURRENT_DIR| + "/" + |DOC_PATH| + "/basic.html"
+click: "#button"
+assert-text: ("body > header", "Another page!")

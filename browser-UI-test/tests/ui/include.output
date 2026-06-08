@@ -1,0 +1,16 @@
+=> Running 1 doc-ui test...
+include... FAILED
+[ERROR] line 4: The following errors happened: [`Another page!` isn't equal to `tadam`]: for command `assert-text: ("header", "tadam")`
+    at <file://$CURRENT_DIR/tests/html_files/elements.html>
+[ERROR] line 6
+    at `tests/ui/sub/include.goml` line 3: The following errors happened: [`Basic test!` isn't equal to `hoho`]: for command `assert-text: ("header", "hoho")`
+    at <file://$CURRENT_DIR/tests/html_files/basic.html>
+[ERROR] line 6
+    at `tests/ui/sub/include.goml` line 5: The following errors happened: [`` isn't equal to `hoho`]: for command `assert-text: ("header", "hoho")`
+    at <file://$CURRENT_DIR/tests/html_files/elements.html>
+[ERROR] line 9: The following errors happened: [`` isn't equal to `tadam`]: for command `assert-text: ("header", "tadam")`
+    at <file://$CURRENT_DIR/tests/html_files/elements.html>
+[ERROR] line 14
+    at `tests/ui/sub/func.goml` line 5: `#does_not-exist` not found: for command `click: "#does_not-exist"`
+    at <file://$CURRENT_DIR/tests/html_files/elements.html>
+<= doc-ui tests done: 0 succeeded, 1 failed, 0 filtered out

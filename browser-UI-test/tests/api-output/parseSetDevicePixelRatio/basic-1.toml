@@ -1,0 +1,8 @@
+instructions = [
+  """const viewport = pages[0].viewport();
+const newViewport = {
+    ...viewport,
+    deviceScaleFactor: 1.2,
+};
+await pages[0].setViewport(newViewport);""",
+]

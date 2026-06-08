@@ -1,0 +1,16 @@
+store-value: (a, "0")
+assert-variable: (a, "1")
+if: (true, block {
+    assert-variable: (a, "1")
+})
+
+define-function: ("foo", [], block {
+    assert-variable: (a, "1")
+})
+
+define-function: ("bar", [], block {
+    call-function: ("foo", {})
+})
+
+call-function: ("foo", {})
+call-function: ("bar", {})

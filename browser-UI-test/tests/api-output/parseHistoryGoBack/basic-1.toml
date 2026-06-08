@@ -1,0 +1,9 @@
+instructions = [
+  """const ret = pages[0].goBack({'waitUntil': 'domcontentloaded', 'timeout': 30000});
+if (ret === null) {
+    throw \"cannot go back in history\";
+}
+await ret;""",
+]
+warnings = [
+]

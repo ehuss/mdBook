@@ -1,0 +1,1 @@
+error = """expected an ident, an array or nothing, found `\"c\"` (a string) (third element of the tuple)"""

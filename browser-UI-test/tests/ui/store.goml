@@ -1,0 +1,46 @@
+// This test ensures that the `store*` commands are working as expected.
+go-to: "file://" + |CURRENT_DIR| + "/" + |DOC_PATH| + "/elements.html"
+store-value: (background_color, "#111")
+// This check should fail.
+assert-css: ("header", {"background-color": |background_color|})
+store-value: (background_color, "rgb(17, 17, 17)")
+// Duplicating variable.
+store-value: (background_color2, |background_color|)
+assert-css: ("header", {"background-color": |background_color|})
+assert-css: ("header", {"background-color": |background_color2|})
+store-property: ("header", {"clientHeight": height})
+store-property: ("header", {"clientTop": top})
+store-property: ("header", {"clientHeight": height2, "clientTop": top2})
+assert: |height| == |height2| && |top| == |top2|
+// Checking object-path
+store-property: ("header", {"innerText": inner1})
+store-property: ("body", {"firstElementChild"."innerText": inner2})
+assert: |inner1| == |inner2|
+// The 4 checks should fail
+assert-variable: (height, "12")
+//~^ ERROR: [`24` isn't equal to `12`]
+assert-variable-false: (height, "24")
+//~^ ERROR: [`24` is equal to `24`]
+assert-variable-false: (height, "2", [STARTS_WITH, CONTAINS])
+//~^ ERROR: [`24` contains `2` (for CONTAINS check); `24` starts with `2` (for STARTS_WITH check)]
+assert-variable-false: (height, "4", [CONTAINS, ENDS_WITH])
+//~^ ERROR: [`24` contains `4` (for CONTAINS check); `24` ends with `4` (for ENDS_WITH check)]
+// The 4 checks should succeed
+assert-variable: (height, "24")
+assert-variable-false: (height, "12")
+assert-variable: (height, "2", [STARTS_WITH, CONTAINS])
+assert-variable: (height, "4", [CONTAINS, ENDS_WITH])
+store-css: ("header", {"background-color": height})
+store-css: ("header", {"font-size": font})
+store-css: ("header", {"background-color": height2, "font-size": font2})
+assert: |height| == |height2| && |font| == |font2|
+// Should succeed
+assert-variable: (height, "rgb(17, 17, 17)")
+store-attribute: (".right", {"data-whatever": attr})
+assert-variable: (attr, "a")
+store-attribute: (".right", {"data-whatever": attr2, "class": class})
+assert: |attr| == |attr2| && |class| == "right"
+store-attribute: ("header", {"data-whatever": attr})
+//~^ ERROR: ["No attribute named `data-whatever`"]
+// Nothing after this point.
+store-attribute: ("header", {"data-whatever": attr})

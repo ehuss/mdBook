@@ -1,0 +1,10 @@
+go-to: "file://" + |CURRENT_DIR| + "/" + |DOC_PATH| + "/basic.html" // still the same...
+assert-text: ("#the-input", "")
+write-into: ("#the-input", "hello")
+assert-text: ("#the-input", "hello")
+press-key: "KeyA"
+assert-text: ("#the-input", "helloa")
+assert: ("#the-input:focus")
+press-key: "Tab"
+expect-failure: true
+assert: ("#the-input:focus") // We want to ensure that the input isn't focused anymore

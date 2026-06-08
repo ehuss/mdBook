@@ -1,0 +1,12 @@
+instructions = [
+  """const { compareArrayLike, compareJson } = require('command-helpers.js');
+
+const check = 1 >= 2 / (9);
+try {
+if (!check) {
+    throw \"Condition `1 >= 2 / (3 + 6)` (`1 >= 2 / (9)`) was evaluated as false\";
+}
+} catch(e) { return; } throw \"assert didn't fail\";""",
+]
+wait = false
+checkResult = true

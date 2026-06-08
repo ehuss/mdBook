@@ -1,0 +1,26 @@
+instructions = [
+  """async function checkTextForElem(elem) {
+    await elem.evaluate(e => {
+        const errors = [];
+        const value = \"b\";
+        const elemText = browserUiTestHelpers.getElemText(e, value);
+        if (elemText !== value) {
+            errors.push(\"`\" + elemText + \"` isn't equal to `\" + value + \"`\");
+        }
+        if (errors.length !== 0) {
+            const errs = errors.join(\"; \");
+            throw \"The following errors happened: [\" + errs + \"]\";
+        }
+    });
+}
+
+const parseAssertElemStr = await page.$$(\"::-p-xpath(//a[text()=\\'l\\'])\");
+if (parseAssertElemStr.length === 0) { throw \"`//a[text()=\\'l\\']` not found\"; }
+for (const elem of parseAssertElemStr) {
+    await checkTextForElem(elem);
+}""",
+]
+wait = false
+checkResult = true
+warnings = [
+]
